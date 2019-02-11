@@ -15,21 +15,23 @@ coord
 dim(coord)
 str(coord) 
   
-coord_df <- data.frame(coord, within_5km = geosphere::distHaversine(coord, c(-2.106472, 57.14455)) / 1000 < 10)
+coord_df <- data.frame(coord, within_5km = geosphere::distHaversine(coord, c(-2.106472, 57.14455)) / 1000 < 5)
+table(coord_df$within_5km)
+dim(coord_df)
 # convert m to km, check < 5
 coord_df
 str(coord_df)
 dim(coord_df)
 table(coord_df$within_5km)
 
-coord_df <- data.frame(coord, within_5km = geosphere::distHaversine(coord, c(-2.106472, 57.14455)) < 500)
+coord_df <- data.frame(coord, within_5km = geosphere::distHaversine(coord, c(-2.106472, 57.14455)) < 1000)
 table(coord_df$within_5km)
 coord_df
 
 #https://stackoverflow.com/questions/32363998/function-to-calculate-geospatial-distance-between-two-points-lat-long-using-r
 library(geosphere)
 distm(c(-2.106472, 57.14455), c(-2.104092, 57.14485), fun = distHaversine)
-coord_df$dist = apply(coor,1,sum)
+
 
 
 
@@ -48,3 +50,18 @@ coord_sub_set = sqldf("SELECT *, (6371 * acos(cos( radians(-30.053831)) * cos(ra
 dim(coord_sub_set)
 coord_sub_set
 distm(c(-2.106472, 57.14455), c(-2.249217, 57.10063), fun = distHaversine)
+
+
+
+
+
+head(data)
+coord_sub_set = sqldf("SELECT *, (6371 * acos(cos( radians(-30.053831)) * cos(radians(lat)) * cos(radians(long) - radians(-51.191810)) + sin(radians(-30.053831)) * sin(radians(lat)))) AS distancia FROM data GROUP BY lat HAVING distancia < 1 ORDER BY distancia ASC ")
+dim(data)
+dim(coord_sub_set)
+coord_sub_set
+data1 = data[, 1:2]
+data1
+coord_df <- data.frame(data1, within_5km = geosphere::distHaversine(data1, c(-30.053831, -51.191810)) < 0.500)
+dim(coord_df)
+

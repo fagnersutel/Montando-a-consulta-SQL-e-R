@@ -14,3 +14,17 @@ dim(coord_sub_set)
 coord_sub_set
 distm(c(-30.053831, -51.191810), c(-30.05412, -51.19247), fun = distHaversine)
 View(coord_sub_set)
+
+
+library(leaflet.extras)
+pal <- colorFactor(
+  palette = 'Dark2'
+)
+
+data = data[complete.cases(data), ]
+
+leaflet(data) %>%
+  addTiles(group="OSM") %>% 
+  addCircles(~long, ~lat, weight = 0.1, radius=30, color="red",
+             stroke = TRUE, fillOpacity = 0.8) %>% 
+  addLegend("topright", colors= "blue", labels=paste("alvaras", sep = " "), title="Cluster")

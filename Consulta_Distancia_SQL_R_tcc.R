@@ -14,14 +14,16 @@ dim(coord_sub_set)
 coord_sub_set
 distm(c(-30.053831, -51.191810), c(-30.05412, -51.19247), fun = distHaversine)
 View(coord_sub_set)
-
-
+data = coord_sub_set
+dim(data)
 library(leaflet.extras)
 pal <- colorFactor(
   palette = 'Dark2'
 )
 
 data = data[complete.cases(data), ]
+data <- data[data$lat < 0, ]
+data <- data[data$long < 0, ]
 
 leaflet(data) %>%
   addTiles(group="OSM") %>% 
